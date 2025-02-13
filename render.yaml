@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: line-bingo-bot
+    env: python
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+    startCommand: python -m gunicorn line_bot:app
+    envVars:
+      - key: LINE_CHANNEL_ACCESS_TOKEN
+        value: k0LFxb148FVTooSV8cAWaXWovnQ1DPgM8T44BOjGdft1R8mWEfSaR2yqFCs8O5bOg0Q2FcC1YLulLYhBR0ItXXS7vaAOjy+RxD3P6uC3W+ACQqjYhHMJnnH2LFeqx95PbgFWC4FRRv+2pZ7aZA2AjAdB04t89/1O/w1cDnyilFU=
+      - key: LINE_CHANNEL_SECRET
+        value: d287b4093d6679fc40b0ab8d01e5cda7
+      - key: RENDER
+        value: true
+      - key: PORT
+        value: 10000
+      - key: GOOGLE_CHROME_BIN
+        value: /usr/bin/google-chrome
+      - key: CHROMEDRIVER_PATH
+        value: /usr/local/bin/chromedriver 
