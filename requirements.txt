@@ -1,7 +1,10 @@
-flask==3.0.2
+﻿flask==3.0.2
 line-bot-sdk==3.9.0
 selenium==4.18.1
-requests==2.31.0
-beautifulsoup4==4.12.3
+requests
+beautifulsoup4
 webdriver_manager==4.0.1
-gunicorn==21.2.0 
+gunicorn==21.2.0
+PyGithub
+urllib3
+python-dotenv

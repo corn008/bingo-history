@@ -5,14 +5,18 @@ import os
 import requests
 from github import Github
 import logging
+from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# 加載 .env 文件
+load_dotenv()
+
 def load_existing_data():
     """從 GitHub 加載現有數據"""
     try:
-        repo_name = os.environ.get('REPO_NAME', 'YOUR_USERNAME/YOUR_REPO')
+        repo_name = os.getenv('REPO_NAME', 'YOUR_USERNAME/YOUR_REPO')
         url = f"https://raw.githubusercontent.com/{repo_name}/main/data/bingo_history.json"
         response = requests.get(url)
         if response.status_code == 200:
@@ -23,6 +27,11 @@ def load_existing_data():
 
 def update_history():
     """更新歷史數據"""
+    # 調試信息
+    print("環境變數:")
+    print("GITHUB_TOKEN:", os.getenv('GITHUB_TOKEN'))
+    print("REPO_NAME:", os.getenv('REPO_NAME'))
+    
     # 獲取現有數據
     existing_data = load_existing_data()
     existing_records = {record['期號']: record for record in existing_data['records']}
@@ -51,8 +60,13 @@ def update_history():
     
     # 保存到 GitHub
     try:
-        g = Github(os.environ['GITHUB_TOKEN'])
-        repo_name = os.environ.get('REPO_NAME', 'YOUR_USERNAME/YOUR_REPO')
+        github_token = os.getenv('GITHUB_TOKEN')
+        if not github_token:
+            logger.error("未設置 GITHUB_TOKEN 環境變數")
+            return False
+        
+        g = Github(github_token)
+        repo_name = os.getenv('REPO_NAME', 'YOUR_USERNAME/YOUR_REPO')
         repo = g.get_repo(repo_name)
         
         # 獲取現有文件
